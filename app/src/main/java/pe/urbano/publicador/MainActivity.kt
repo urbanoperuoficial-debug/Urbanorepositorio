@@ -75,6 +75,6 @@ class MainActivity:Activity(){
   android.app.AlertDialog.Builder(this).setTitle("Permisos Android").setItems(options){_,which->
    val action=when(which){0->Settings.ACTION_APP_NOTIFICATION_SETTINGS;1->if(Build.VERSION.SDK_INT>=31)Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM else Settings.ACTION_APPLICATION_DETAILS_SETTINGS;2->Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS;3->Settings.ACTION_MANAGE_OVERLAY_PERMISSION;4->Settings.ACTION_ACCESSIBILITY_SETTINGS;else->Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS}
    try{startActivity(Intent(action).apply{if(which==0)putExtra(Settings.EXTRA_APP_PACKAGE,packageName);if(which==1||which==3)data=Uri.parse("package:$packageName")})}catch(_:Exception){Toast.makeText(this,"No disponible en este Android",Toast.LENGTH_SHORT).show()}
-  }.setMessage("Esta versión no solicita PIN, no lee notificaciones y no activa accesibilidad. Los accesos se muestran como referencia para pruebas futuras.").show()
+  }.show()
  }
 }
