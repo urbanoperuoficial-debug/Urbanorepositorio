@@ -11,6 +11,7 @@
    <intent-filter><action android:name="android.intent.action.SEND"/><category android:name="android.intent.category.DEFAULT"/><data android:mimeType="text/plain"/></intent-filter>
   </activity>
   <provider android:name=".PhotoProvider" android:authorities="pe.urbano.publicador.shared" android:exported="false" android:grantUriPermissions="true"/>
+  <service android:name=".AutoPublishService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true" android:label="URBANO Publicador — Asistente"><intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter><meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibility_service"/></service>
   <receiver android:name=".SlotReceiver" android:exported="false"/>
   <receiver android:name=".BootReceiver" android:exported="false"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter></receiver>
  </application>
