@@ -26,13 +26,13 @@ object Scheduler {
  fun schedule(c:Context){if(!Store.prefs(c).getBoolean("enabled",false))return
   val alarm=c.getSystemService(AlarmManager::class.java)
   val pi=PendingIntent.getBroadcast(c,0,Intent(c,SlotReceiver::class.java),PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-  val whenMs=nextSlot(System.currentTimeMillis()); if(Build.VERSION.SDK_INT>=31 && alarm.canScheduleExactAlarms())alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,whenMs,pi) else alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,whenMs,pi)
+  val whenMs=nextSlot(System.currentTimeMillis()); Store.prefs(c).edit().putLong("next_alarm",whenMs).apply(); if(Build.VERSION.SDK_INT>=31 && alarm.canScheduleExactAlarms())alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,whenMs,pi) else alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,whenMs,pi)
  }
  fun cancel(c:Context){val pi=PendingIntent.getBroadcast(c,0,Intent(c,SlotReceiver::class.java),PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE);c.getSystemService(AlarmManager::class.java).cancel(pi)}
 }
 class SlotReceiver:BroadcastReceiver(){override fun onReceive(c:Context,intent:Intent?){
  if(!Store.prefs(c).getBoolean("enabled",false))return
- val cal=Calendar.getInstance();val hour=cal.get(Calendar.HOUR_OF_DAY);val minute=cal.get(Calendar.MINUTE)
+ val cal=Calendar.getInstance();val hour=cal.get(Calendar.HOUR_OF_DAY);val minute=cal.get(Calendar.MINUTE)\n // Las alarmas inexactas pueden llegar tarde; el turno se calcula desde la hora programada.
  val section=if(hour in 9..21 && (hour!=21 || minute==0) && (minute==0||minute==30)) {if(minute==0)0 else 1} else -1
  if(section>=0){val p=Store.load(c).firstOrNull{it.section==section&&it.status=="PENDIENTE"}
   if(p!=null){val nm=c.getSystemService(NotificationManager::class.java);nm.createNotificationChannel(NotificationChannel("publication","Publicaciones pendientes",NotificationManager.IMPORTANCE_HIGH))
