@@ -7,7 +7,7 @@ import android.os.ParcelFileDescriptor
 import java.io.File
 class PhotoProvider:ContentProvider(){
  override fun onCreate()=true
- override fun getType(uri:Uri)="image/jpeg"
+ override fun getType(uri:Uri)=when(uri.lastPathSegment?.substringAfterLast('.')){"png"->"image/png";"webp"->"image/webp";"heic"->"image/heic";else->"image/jpeg"}
  override fun query(uri:Uri,projection:Array<out String>?,selection:String?,selectionArgs:Array<out String>?,sortOrder:String?):Cursor?=null
  override fun insert(uri:Uri,values:ContentValues?):Uri?=null
  override fun delete(uri:Uri,selection:String?,selectionArgs:Array<out String>?)=0
@@ -15,7 +15,7 @@ class PhotoProvider:ContentProvider(){
  override fun openFile(uri:Uri,mode:String):ParcelFileDescriptor?{
   if(mode!="r")throw SecurityException("Solo lectura")
   val name=uri.lastPathSegment?:throw java.io.FileNotFoundException()
-  if(!name.matches(Regex("photo_[a-f0-9-]+\\.jpg")))throw java.io.FileNotFoundException()
+  if(!name.matches(Regex("photo_[a-f0-9-]+\\.(jpg|png|webp|heic)")))throw java.io.FileNotFoundException()
   return ParcelFileDescriptor.open(File(requireNotNull(context).filesDir,name),ParcelFileDescriptor.MODE_READ_ONLY)
  }
 }
