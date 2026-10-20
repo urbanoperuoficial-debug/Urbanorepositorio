@@ -25,6 +25,7 @@ class MainActivity:Activity(){
  private var draftUris:List<Uri> = emptyList()
  private var draftText=""
  private var markup=0
+ private var draftPrice=0
  private val navy=Color.rgb(21,35,61)
  private val blue=Color.rgb(34,92,220)
  private fun shape(color:Int,radius:Float=18f)=GradientDrawable().apply{setColor(color);cornerRadius=radius}
@@ -62,9 +63,9 @@ class MainActivity:Activity(){
   if(draftUris.isNotEmpty()){val photos=HorizontalScrollView(this);val strip=LinearLayout(this).apply{orientation=LinearLayout.HORIZONTAL};draftUris.take(15).forEach{uri->val img=ImageView(this).apply{setImageURI(uri);scaleType=ImageView.ScaleType.CENTER_CROP};strip.addView(img,LinearLayout.LayoutParams(180,180).apply{setMargins(0,0,12,0)})};photos.addView(strip);add(photos)}
   add(label("Aumentar precio al importar o compartir",14f))
   val priceRow=LinearLayout(this).apply{orientation=LinearLayout.HORIZONTAL}
-  listOf(0,5,10,15,20).forEach{v->priceRow.addView(button(if(v==markup)"✓ +S/ $v" else "+S/ $v"){markup=v;Toast.makeText(this,"Recargo seleccionado: S/ $v",Toast.LENGTH_SHORT).show()},LinearLayout.LayoutParams(0,-2,1f).apply{setMargins(2,0,2,0)})};add(priceRow)
-  add(button("ELEGIR FOTOS") {val i=Intent(Intent.ACTION_OPEN_DOCUMENT).apply{type="image/*";addCategory(Intent.CATEGORY_OPENABLE);putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)};startActivityForResult(i,100)})
-  add(button("GUARDAR PRODUCTO EN COLA") {val t=desc.text.toString();if(t.isBlank()&&draftUris.isEmpty()){Toast.makeText(this,"Agrega descripción o fotos",Toast.LENGTH_SHORT).show();return@button};Store.add(this,section,applyMarkup(t,markup),draftUris);draftText="";draftUris=emptyList();show()})
+  listOf(0,5,10,15,20).forEach{v->priceRow.addView(button(if(v==markup)"✓ +S/ $v" else "+S/ $v"){draftText=desc.text.toString();markup=v;show()},LinearLayout.LayoutParams(0,-2,1f).apply{setMargins(2,0,2,0)})};add(priceRow)
+  add(button("ELEGIR FOTOS") {draftText=desc.text.toString();val i=Intent(Intent.ACTION_OPEN_DOCUMENT).apply{type="image/*";addCategory(Intent.CATEGORY_OPENABLE);putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)};startActivityForResult(i,100)})
+  add(button("GUARDAR PRODUCTO EN COLA") {val t=desc.text.toString();if(t.isBlank()&&draftUris.isEmpty()){Toast.makeText(this,"Agrega descripción o fotos",Toast.LENGTH_SHORT).show();return@button};Store.add(this,section,applyMarkup(t,markup),draftUris);draftText="";draftUris=emptyList();markup=0;show()})
   add(heading("Cola de publicaciones"))
   add(label("Pendientes: "+Store.load(this).count{it.section==section&&it.status=="PENDIENTE"}+"  ·  Enviados: "+Store.load(this).count{it.section==section&&it.status=="ENVIADO"},14f))
   val items=Store.load(this).filter{it.section==section};if(items.isEmpty())add(label("Todavía no hay productos."))
