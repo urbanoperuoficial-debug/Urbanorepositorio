@@ -56,6 +56,8 @@ class MainActivity:Activity(){
   })
   val next=Store.prefs(this).getLong("next_alarm",0L)
   if(enabled&&next>0)add(label("Próximo aviso: "+SimpleDateFormat("dd/MM · hh:mm a",Locale("es","PE")).format(Date(next)),14f))
+  add(button("ACTIVAR ASISTENTE DE ACCESIBILIDAD"){startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))})
+  add(label(if(AutoPublishService.active!=null)"Asistente de accesibilidad: ACTIVO" else "Asistente de accesibilidad: DESACTIVADO",13f))
   add(button("PERMISOS Y NOTIFICACIONES"){permissions()})
   add(heading("Nuevo producto · ${if(section==0)"Fotos Urbano" else "Foto Réplica"}"))
   val desc=EditText(this).apply{hint="Descripción, tallas y precio";minLines=3;setText(draftText)};add(desc)
