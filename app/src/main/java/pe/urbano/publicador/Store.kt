@@ -17,7 +17,7 @@ object Store {
  } catch(_:Exception){ mutableListOf() }
  fun save(c:Context, items:List<Product>){ val a=JSONArray();items.forEach {p->a.put(JSONObject().put("id",p.id).put("section",p.section).put("text",p.text).put("files",JSONArray(p.files)).put("status",p.status).put("created",p.created))};file(c).writeText(a.toString()) }
  fun add(c:Context,section:Int,text:String,uris:List<Uri>){
-  val paths=uris.mapNotNull {u->try {val dest=File(c.filesDir,"photo_${UUID.randomUUID()}.jpg");c.contentResolver.openInputStream(u)?.use {input->dest.outputStream().use{input.copyTo(it)}};dest.absolutePath}catch(_:Exception){null}}
+  val paths=uris.mapNotNull {u->try {val mime=c.contentResolver.getType(u)?:"image/jpeg";val ext=when(mime){"image/png"->"png";"image/webp"->"webp";"image/heic","image/heif"->"heic";else->"jpg"};val dest=File(c.filesDir,"photo_${UUID.randomUUID()}.$ext");val input=c.contentResolver.openInputStream(u)?:return@mapNotNull null;input.use {stream->dest.outputStream().use{stream.copyTo(it)}};dest.absolutePath}catch(_:Exception){null}}
   val items=load(c);items.add(Product(UUID.randomUUID().toString(),section,text,paths));save(c,items)
  }
  fun prefs(c:Context)=c.getSharedPreferences("config",Context.MODE_PRIVATE)
