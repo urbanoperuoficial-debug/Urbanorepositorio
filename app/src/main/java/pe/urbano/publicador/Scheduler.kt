@@ -32,7 +32,8 @@ object Scheduler {
 }
 class SlotReceiver:BroadcastReceiver(){override fun onReceive(c:Context,intent:Intent?){
  if(!Store.prefs(c).getBoolean("enabled",false))return
- val cal=Calendar.getInstance();val hour=cal.get(Calendar.HOUR_OF_DAY);val minute=cal.get(Calendar.MINUTE)\n // Las alarmas inexactas pueden llegar tarde; el turno se calcula desde la hora programada.
+ val cal=Calendar.getInstance();val hour=cal.get(Calendar.HOUR_OF_DAY);val minute=cal.get(Calendar.MINUTE)
+ // Las alarmas inexactas pueden llegar tarde; el turno se calcula desde la hora programada.
  val section=if(hour in 9..21 && (hour!=21 || minute==0) && (minute==0||minute==30)) {if(minute==0)0 else 1} else -1
  if(section>=0){val p=Store.load(c).firstOrNull{it.section==section&&it.status=="PENDIENTE"}
   if(p!=null){val nm=c.getSystemService(NotificationManager::class.java);nm.createNotificationChannel(NotificationChannel("publication","Publicaciones pendientes",NotificationManager.IMPORTANCE_HIGH))
