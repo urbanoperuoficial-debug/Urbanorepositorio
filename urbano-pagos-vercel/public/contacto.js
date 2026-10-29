@@ -8,6 +8,7 @@ async function showContact(){
  const {r,data}=await request('/api/contacto');
  if(r.status===401){showLogin();return}
  if(!r.ok){showLogin(data.error||'No se pudo comprobar tu acceso.');return}
+ $('contact-name').textContent=data.nombre;$('contact-phone').textContent=data.telefono;
  checking.hidden=true;form.hidden=true;panel.hidden=false;
  // Un navegador puede impedir un lanzamiento automático; queda un botón para el cliente.
  // El endpoint VCF solo responde si el servidor confirma una sesión auténtica.
