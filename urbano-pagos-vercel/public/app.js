@@ -1,12 +1,5 @@
 'use strict';
 const $=id=>document.getElementById(id);let accounts=null,current='Yape';
-const labels={
-Yape:'Copia el número y búscalo como destinatario en Yape. Confirma el nombre antes de autorizar el pago.',
-Plin:'Copia el número y búscalo desde tu aplicación con Plin. Confirma el nombre antes de autorizar el pago.',
-BBVA:'Copia el número de cuenta BBVA. No es un código interbancario (CCI).',
-BCP:'Copia el número de cuenta BCP. No es un código interbancario (CCI).',
-Interbank:'Copia el número de cuenta Interbank. No es un código interbancario (CCI).',
-Scotiabank:'Copia el número de cuenta Scotiabank. No es un código interbancario (CCI).'};
 async function api(url,options={}){const response=await fetch(url,{credentials:'same-origin',cache:'no-store',...options});const data=await response.json().catch(()=>({}));return{response,data};}
 function showLogin(msg=''){accounts=null;$('panel').hidden=true;$('gate').hidden=false;$('error').textContent=msg;}
 function showPayment(method){
@@ -16,7 +9,7 @@ function showPayment(method){
  $('field-label').textContent=method==='Yape'||method==='Plin'?'Número de celular':'Número de cuenta';
  const number=accounts[method];
  $('account-number').textContent=method==='Yape'||method==='Plin'?number.replace(/^(\d{3})(\d{3})(\d{3})$/,'$1 $2 $3'):number;
- $('hint').textContent=labels[method];$('copy').textContent='Copiar ⧉';
+ $('copy').textContent='Copiar ⧉';
  document.querySelectorAll('.method').forEach(b=>{const selected=b.dataset.method===method;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
 }
 async function loadPayments(){const{response,data}=await api('/api/payments');if(!response.ok){showLogin(response.status===503?'Portal pendiente de configuración segura.':'');return;}accounts=data.cuentas;$('gate').hidden=true;$('panel').hidden=false;showPayment(current);}
