@@ -1,6 +1,8 @@
 import { createHmac, createHash, timingSafeEqual } from 'node:crypto';
 export const COOKIE_NAME = 'urbano_pay';
-export const SESSION_SECONDS = 30 * 60;
+// Sesión recordada en el mismo navegador hasta 400 días de inactividad.
+// Cada visita autenticada renueva la cookie; duración efectiva continua mientras se use.
+export const SESSION_SECONDS = 400 * 24 * 60 * 60;
 export function getSettings() {
  const pin=process.env.URBANO_PAYMENT_PIN||'';
  const secret=process.env.URBANO_SESSION_SECRET||'';
