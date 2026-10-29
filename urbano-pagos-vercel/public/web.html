@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b26">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>URBANO | Página web para clientes</title>
+<link rel="stylesheet" href="/mujer.css?v=2">
+<script defer src="/web.js?v=1"></script></head>
+<body><main class="page">
+<section class="card">
+ <div class="logo" aria-hidden="true">U</div>
+ <div class="brand">URBANO</div>
+ <div class="subbrand">PÁGINA WEB OFICIAL</div>
+ <h1>Bienvenido a URBANO</h1>
+ <p class="intro">Ingresa la clave de acceso para abrir nuestra página web y explorar el catálogo.</p>
+ <div id="checking" class="status" role="status" aria-live="polite">Comprobando tu acceso…</div>
+ <form id="access-form" hidden autocomplete="off">
+  <label for="pin">Clave de acceso</label>
+  <input id="pin" type="text" inputmode="numeric" pattern="[0-9]{4,12}" maxlength="12" autocomplete="off" placeholder="Escribe tu clave" required aria-describedby="message">
+  <p id="message" class="message" role="alert" aria-live="polite"></p>
+  <button id="login" type="submit">Ingresar a la página <span aria-hidden="true">→</span></button>
+ </form>
+ <div id="redirecting" class="handoff" hidden>
+  <div class="ready" role="status" aria-live="polite">Acceso autorizado</div>
+  <p class="open-hint">Abriendo el catálogo de URBANO…</p>
+  <a class="open-button" id="open-web" href="#" rel="noopener noreferrer">Abrir página web <span aria-hidden="true">↗</span></a>
+ </div>
+ <div class="footnote">¿No tienes la clave? Solicítala a nuestro personal.</div>
+</section>
+<small class="footer">URBANO · Acceso al catálogo oficial</small>
+</main></body></html>
