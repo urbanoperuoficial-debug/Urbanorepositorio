@@ -22,7 +22,15 @@ function showPayment(method){
 async function loadPayments(){const{response,data}=await api('/api/payments');if(!response.ok){showLogin(response.status===503?'Portal pendiente de configuración segura.':'');return;}accounts=data.cuentas;$('gate').hidden=true;$('panel').hidden=false;showPayment(current);}
 $('access-form').addEventListener('submit',async e=>{e.preventDefault();const pin=$('pin').value;$('error').textContent='';$('login').disabled=true;
  try{const{response,data}=await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin})});
- $('pin').value='';if(!response.ok){$('error').textContent=response.status===429?'Demasiados intentos. Intenta más tarde.':(data.error||'No se pudo validar la clave.');return;}await loadPayments();}
+ $('pin').value='';if(!response.ok){
+ if(response.status===429){
+  const mins=Math.max(1,Math.ceil((data.retryAfter||900)/60));
+  $('error').textContent='3 intentos agotados. Intenta de nuevo en '+mins+' minuto'+(mins===1?'':'s')+'.';
+ } else if(response.status===401 && Number.isInteger(data.remaining)){
+  $('error').textContent='Clave incorrecta. Te quedan '+data.remaining+' intento'+(data.remaining===1?'':'s')+'.';
+ } else {$('error').textContent=data.error||'No se pudo validar la clave.';}
+ return;
+}await loadPayments();}
  catch{$('error').textContent='No se pudo conectar con el servidor.'}finally{$('login').disabled=false;}
 });
 $('pin').addEventListener('input',()=>{$('error').textContent='';});
