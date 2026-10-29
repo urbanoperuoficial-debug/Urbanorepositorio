@@ -1,0 +1,30 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#123b26"><meta name="robots" content="noindex,nofollow,noarchive"><title>URBANO | Paga fácilmente</title><link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script></head><body>
+<section id="gate" class="gate"><div class="gate-panel">
+  <div class="monogram" aria-hidden="true">U</div><div class="gate-brand">URBANO</div>
+  <div class="eyebrow">PORTAL DE PAGOS</div><h1>Bienvenido</h1>
+  <p>Ingresa la clave que te proporcionó nuestro personal para ver los medios de pago.</p>
+  <form id="access-form" autocomplete="off">
+  <label for="pin">Clave de acceso</label>
+  <input id="pin" type="password" inputmode="numeric" pattern="[0-9]{4,12}" maxlength="12" autocomplete="off" placeholder="••••" required aria-describedby="error">
+  <div id="error" class="error" role="alert" aria-live="polite"></div>
+  <button class="main-btn" id="login" type="submit">Ingresar <span aria-hidden="true">→</span></button>
+  </form><small>¿No tienes la clave? Solicítala a un asesor URBANO.</small>
+</div><div class="gate-foot">URBANO · Acceso protegido</div></section>
+<div id="panel" hidden>
+<header><div class="header-inner"><div class="brand">URBANO</div><div class="eyebrow">PAGOS POR NFC</div><h1>Paga fácilmente.</h1><p>Elige cómo deseas pagar y copia los datos correspondientes.</p></div></header>
+<main class="wrap">
+<div class="beneficiary"><strong>Beneficiario: Andrés Díaz</strong><small>Verifica el destinatario y el importe en tu aplicación antes de pagar.</small></div>
+<div class="between"><h2>Selecciona tu método de pago</h2><button class="logout" id="logout" type="button">Salir <span aria-hidden="true">↗</span></button></div>
+<div class="methods" id="methods">
+<button class="method active" data-method="Yape" type="button"><img src="/logos/yape.svg" alt="" width="55" height="50"><span><b>Yape</b><small>Número celular</small></span></button>
+<button class="method" data-method="Plin" type="button"><img src="/logos/plin.svg" alt="" width="55" height="50"><span><b>Plin</b><small>Número celular</small></span></button>
+<button class="method" data-method="BBVA" type="button"><img src="/logos/bbva.svg" alt="" width="55" height="50"><span><b>BBVA</b><small>Transferencia</small></span></button>
+<button class="method" data-method="BCP" type="button"><img src="/logos/bcp.svg" alt="" width="55" height="50"><span><b>BCP</b><small>Transferencia</small></span></button>
+<button class="method" data-method="Interbank" type="button"><img src="/logos/interbank.svg" alt="" width="55" height="50"><span><b>Interbank</b><small>Transferencia</small></span></button>
+<button class="method" data-method="Scotiabank" type="button"><img src="/logos/scotiabank.svg" alt="" width="55" height="50"><span><b>Scotiabank</b><small>Transferencia</small></span></button>
+</div>
+<section class="details"><div class="detail-top"><img id="selected-logo" src="/logos/yape.svg" alt="" width="55" height="50"><div><h2 id="selected-name">Yape</h2><span class="sub">Titular: Andrés Díaz</span></div></div>
+<label class="label" id="field-label">Número de celular</label>
+<div class="account-row"><span id="account-number">—</span><button class="copy" id="copy" type="button">Copiar <span aria-hidden="true">⧉</span></button></div><p class="hint" id="hint"></p></section>
+<section class="instructions"><strong>¿Ya realizaste el pago?</strong><p>Envía la captura del comprobante al asesor de URBANO que gestiona tu pedido. La venta se confirma al verificar la recepción del dinero.</p></section>
+<footer>URBANO · El NFC no realiza cargos automáticos.</footer></main></div></body></html>
