@@ -17,15 +17,17 @@ Proyecto web independiente de la aplicación principal URBANO. Está preparado p
 ## Seguridad
 
 - Los números de cuentas no están en el repositorio ni en los archivos HTML o JavaScript enviados al navegador antes de autenticar.
-- Cookie firmada HMAC SHA-256, `HttpOnly`, `Secure`, `SameSite=Strict`, caducidad de 30 minutos.
+- Cookie firmada HMAC SHA-256, `HttpOnly`, `Secure`, `SameSite=Strict`, vigencia renovable de hasta 400 días desde cada visita autenticada al mismo navegador. En algunos dispositivos o navegadores puede expirar antes.
 - No es un procesador de pagos y no inicia Yape con beneficiario precargado: el usuario debe copiar el dato y confirmar el pago desde su propia app.
 - Con clave de solo 4 dígitos, el límite de intentos es indispensable. Considerar sustituirla por una contraseña más larga.
 - Logos y la pantalla pública son accesibles; **los datos privados de pago no se entregan sin sesión autenticada**. No equivale a una red privada o VPN.
 
 No modifica la aplicación principal de URBANO ni sus bases de datos.
 
-## Límite de 3 intentos
+## Límite de acceso y permanencia de sesión
 
-El servidor controla un máximo de **3 intentos fallidos por dirección IP**. Bloquea esa IP durante **15 minutos completos desde el tercer fallo**. Los errores 401 incluyen los intentos restantes y el error 429 los segundos que faltan para desbloquear. Un ingreso correcto antes del tercer fallo reinicia el contador. La comprobación es atómica mediante Upstash Redis para varias funciones serverless simultáneas. Si no se puede contactar Redis, el portal deniega la autenticación por seguridad.
-
-Para que funcione en Vercel, conecta una base de datos Upstash Redis al proyecto y añade las variables privadas UPSTASH_REDIS_REST_URL y UPSTASH_REDIS_REST_TOKEN (además de las tres variables de pagos). Después vuelve a desplegar. Nunca expongas estas credenciales en el repositorio.
+- El firewall de Vercel limita **3 solicitudes POST a /api/login por IP cada 10 minutos**. Es una medida contra el abuso, no un contador exacto de claves incorrectas, y puede afectar a clientes que comparten una IP.
+- El navegador conserva una cookie de sesión firmada y segura durante hasta **400 días**, renovada tras cada consulta autenticada. Mientras el cliente vuelva a abrir el portal antes de que expire en ese mismo navegador, no necesita ingresar otra vez el PIN.
+- Al usar **Salir** se elimina la cookie del navegador. También deberá ingresar la clave si elimina cookies, cambia de navegador o dispositivo, usa modo incógnito o supera el tiempo de inactividad.
+- Este modelo no permite revocación selectiva de sesiones sin una base de datos de sesiones. En equipos compartidos, se recomienda cerrar sesión.
+- El proyecto está aislado de la aplicación principal URBANO; su publicación comercial requiere un plan de Vercel que lo permita.
