@@ -23,12 +23,8 @@ async function loadPayments(){const{response,data}=await api('/api/payments');if
 $('access-form').addEventListener('submit',async e=>{e.preventDefault();const pin=$('pin').value;$('error').textContent='';$('login').disabled=true;
  try{const{response,data}=await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin})});
  $('pin').value='';if(!response.ok){
- if(response.status===429){
-  const mins=Math.max(1,Math.ceil((data.retryAfter||900)/60));
-  $('error').textContent='3 intentos agotados. Intenta de nuevo en '+mins+' minuto'+(mins===1?'':'s')+'.';
- } else if(response.status===401 && Number.isInteger(data.remaining)){
-  $('error').textContent='Clave incorrecta. Te quedan '+data.remaining+' intento'+(data.remaining===1?'':'s')+'.';
- } else {$('error').textContent=data.error||'No se pudo validar la clave.';}
+ if(response.status===429){$('error').textContent='Límite de 3 intentos por conexión. Prueba nuevamente después de 10 minutos.';}
+ else {$('error').textContent=data.error||'No se pudo validar la clave.';}
  return;
 }await loadPayments();}
  catch{$('error').textContent='No se pudo conectar con el servidor.'}finally{$('login').disabled=false;}
