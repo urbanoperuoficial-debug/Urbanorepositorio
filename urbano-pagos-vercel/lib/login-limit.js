@@ -19,7 +19,7 @@ if correct then
   return {1, max, 0}
 end
 count = redis.call('INCR', key)
-if count == 1 then redis.call('EXPIRE', key, window) end
+if count == 1 or count == max then redis.call('EXPIRE', key, window) end
 return {0, math.max(0, max-count), math.max(1, redis.call('TTL', key))}
 `;
 
