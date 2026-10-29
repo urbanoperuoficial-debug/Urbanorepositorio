@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#123b26"><meta name="robots" content="noindex,nofollow,noarchive">
-<title>URBANO | Canal Mujer 349B</title><link rel="stylesheet" href="/mujer.css?v=1"><script src="/mujer.js?v=1" defer></script></head>
+<title>URBANO | Canal Mujer 349B</title><link rel="stylesheet" href="/mujer.css?v=2"><script src="/mujer.js?v=2" defer></script></head>
 <body>
 <main class="page">
   <section class="card">
@@ -17,7 +17,13 @@
       <p id="message" class="message" role="alert" aria-live="polite"></p>
       <button id="login" type="submit">Ingresar al canal <span aria-hidden="true">→</span></button>
     </form>
-    <div id="redirecting" class="status" role="status" hidden>Abriendo el canal de WhatsApp…</div>
+    <div id="redirecting" class="handoff" hidden>
+      <div class="ready" role="status" aria-live="polite">Acceso autorizado</div>
+      <p class="open-hint">Abriremos tu canal en la aplicación de WhatsApp cuando el celular lo permita.</p>
+      <a id="open-whatsapp" class="open-button" href="#" rel="noopener noreferrer">Abrir canal en WhatsApp <span aria-hidden="true">↗</span></a>
+      <a id="open-business" class="open-button secondary" href="#" rel="noopener noreferrer" hidden>Abrir en WhatsApp Business</a>
+      <a id="open-web" class="web-fallback" href="#" rel="noopener noreferrer">¿No se abre la aplicación? Ver canal en navegador</a>
+    </div>
     <div class="footnote">¿No tienes la clave? Solicítala a nuestro personal.</div>
   </section>
   <small class="footer">URBANO · Tu acceso al canal oficial de mujer</small>
