@@ -23,3 +23,9 @@ Proyecto web independiente de la aplicación principal URBANO. Está preparado p
 - Logos y la pantalla pública son accesibles; **los datos privados de pago no se entregan sin sesión autenticada**. No equivale a una red privada o VPN.
 
 No modifica la aplicación principal de URBANO ni sus bases de datos.
+
+## Límite de 3 intentos
+
+El servidor controla un máximo de **3 intentos fallidos por dirección IP**. Bloquea esa IP durante **15 minutos completos desde el tercer fallo**. Los errores 401 incluyen los intentos restantes y el error 429 los segundos que faltan para desbloquear. Un ingreso correcto antes del tercer fallo reinicia el contador. La comprobación es atómica mediante Upstash Redis para varias funciones serverless simultáneas. Si no se puede contactar Redis, el portal deniega la autenticación por seguridad.
+
+Para que funcione en Vercel, conecta una base de datos Upstash Redis al proyecto y añade las variables privadas UPSTASH_REDIS_REST_URL y UPSTASH_REDIS_REST_TOKEN (además de las tres variables de pagos). Después vuelve a desplegar. Nunca expongas estas credenciales en el repositorio.
